@@ -1,3 +1,30 @@
+Outputs:
+  PublicIPAddress:
+    Description: Public IP Address
+    Value: !GetAtt MyInstance.PublicIp
+    Export:
+      Name: PublicIP
+  PrivateIPAddress:
+    Description: Private IP Address
+    Value: !GetAtt MyInstance.PrivateIp
+    Export:
+      Name: PrivateIP
+  PrivateDnsName:
+    Description: PrivateDnsName
+    Value: !GetAtt MyInstance.PrivateDnsName
+    Export:
+      Name: PrivateDnsName
+  PublicDnsName:
+    Description: PublicDnsName
+    Value: !GetAtt MyInstance.PublicDnsName
+    Export:
+      Name: PublicDnsName
+  AvailabilityZone:
+    Description: AvailabilityZone
+    Value: !GetAtt MyInstance.AvailabilityZone
+    Export:
+      Name: PubAvailabilityZonelicIP
+
 Resources:
   MyInstance:
     Type: AWS::EC2::Instance
