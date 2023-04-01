@@ -1,0 +1,41 @@
+Resources:
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: ap-northeast-1a
+      ImageId: ami-02a2700d37baeef8b
+      InstanceType: t2.micro
+      KeyName: dat
+      SecurityGroups: 
+        - !Ref MySecurityGroup
+        - !Ref MySecurityGroupForApacheServer
+
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash -xe
+          yum update -y
+          yum install -y httpd
+          systemctl start httpd
+          systemctl enable httpd
+          echo "Hello World from $(hostname -f)" > /var/www/html/index.html
+
+  MySecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: This allow SSH to MyInstanceMadeByCloudFormation
+      GroupName: CloudFormationSecurityGroup
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 22
+        ToPort: 22
+        CidrIp: 0.0.0.0/0
+  MySecurityGroupForApacheServer:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: This allow http to MyInstanceMadeByCloudFormation
+      GroupName: CloudFormationSecurityGroupForApacheServerGroup
+      SecurityGroupIngress:
+      - IpProtocol: tcp
+        FromPort: 80
+        ToPort: 80
+        CidrIp: 0.0.0.0/0
